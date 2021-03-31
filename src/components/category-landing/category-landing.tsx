@@ -54,7 +54,7 @@ export class CategoryLanding {
           <ion-row>
             <ion-col sizeMd="8">
               <ion-item>
-                <ion-label>Sort items by title ascending</ion-label>
+                <ion-label>Sort items by title descending</ion-label>
                 <ion-toggle checked={this.sortState} onIonChange={(ev) => (this.sortState = ev.detail.checked)} />
               </ion-item>
             </ion-col>
