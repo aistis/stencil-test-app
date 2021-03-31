@@ -10,6 +10,8 @@ export namespace Components {
     }
     interface AppRoot {
     }
+    interface CategoryLanding {
+    }
     interface ProductList {
     }
 }
@@ -26,6 +28,12 @@ declare global {
         prototype: HTMLAppRootElement;
         new (): HTMLAppRootElement;
     };
+    interface HTMLCategoryLandingElement extends Components.CategoryLanding, HTMLStencilElement {
+    }
+    var HTMLCategoryLandingElement: {
+        prototype: HTMLCategoryLandingElement;
+        new (): HTMLCategoryLandingElement;
+    };
     interface HTMLProductListElement extends Components.ProductList, HTMLStencilElement {
     }
     var HTMLProductListElement: {
@@ -35,6 +43,7 @@ declare global {
     interface HTMLElementTagNameMap {
         "app-home": HTMLAppHomeElement;
         "app-root": HTMLAppRootElement;
+        "category-landing": HTMLCategoryLandingElement;
         "product-list": HTMLProductListElement;
     }
 }
@@ -43,11 +52,14 @@ declare namespace LocalJSX {
     }
     interface AppRoot {
     }
+    interface CategoryLanding {
+    }
     interface ProductList {
     }
     interface IntrinsicElements {
         "app-home": AppHome;
         "app-root": AppRoot;
+        "category-landing": CategoryLanding;
         "product-list": ProductList;
     }
 }
@@ -57,6 +69,7 @@ declare module "@stencil/core" {
         interface IntrinsicElements {
             "app-home": LocalJSX.AppHome & JSXBase.HTMLAttributes<HTMLAppHomeElement>;
             "app-root": LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
+            "category-landing": LocalJSX.CategoryLanding & JSXBase.HTMLAttributes<HTMLCategoryLandingElement>;
             "product-list": LocalJSX.ProductList & JSXBase.HTMLAttributes<HTMLProductListElement>;
         }
     }
