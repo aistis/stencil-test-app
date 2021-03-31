@@ -9,11 +9,7 @@ export class AppHome {
   render() {
     return [
       <ion-content class="ion-padding">
-        <ion-text color="tertiary">
-          <h1>
-            Mega store featured categories
-          </h1>
-        </ion-text>
+        <page-headline text="Featured store categories"/>
         <ion-card>
           <ion-img
             src="https://i.picsum.photos/id/103/900/300.jpg?hmac=2r71Jgs7llvbcembHL8qVOKq5pB77kHZRlZgxAl5RvY"
