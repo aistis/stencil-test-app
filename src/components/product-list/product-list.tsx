@@ -1,6 +1,7 @@
 import { Component, Prop, State, h } from '@stencil/core';
 import { endpoints } from "../../helpers/apiEndpointsConfig";
 import state from '../../helpers/store';
+import { getUriParams } from '../../helpers/getUriParams';
 
 @Component({
   tag: 'product-list',
@@ -11,6 +12,7 @@ export class ProductList {
   @Prop() brand: string;
   @State() data= [];
   @State() sortState = false;
+  @State() uriParams = {};
 
   async componentWillLoad() {
     try {
@@ -19,11 +21,88 @@ export class ProductList {
       // TODO:needs to be handled in case of fetch or parse fail
       state.products = data
       this.data = data.filter(product => product.brand.toLowerCase() == this.brand)
+      this.uriParams = getUriParams()
     } catch (error) {
+      
       console.error(error)
     }
     console.log(this.data)
   }
+
+  async componentWillRender () {
+    console.log(this.uriParams)
+    this.customizelist()
+  }
+
+  customizelist() {
+    this.data = [...state.products]
+    if(this.uriParams) {
+      console.log('lets filter the list')
+      this.filterItems()
+    }
+    if(this.sortState) {
+      this.sortData(this.data)
+      console.log('lets sort the list')
+    }
+  }
+
+  sortData(data): Array<object> {
+    if (this.sortState) {
+      data.sort((a ,b) => {
+        return a.displayName.toLowerCase() > b.displayName.toLowerCase() ? 1 : -1
+      })
+      return this.data = [...data]
+    }
+  }
+
+  filterItems() {
+    const filter = this.uriParams
+    const products = [...state.products]
+    const filterTest = (arr, criteria) => {
+      return arr.filter((obj) => {
+        let passed:Object = {}
+        Object.keys(criteria).map((c) => {
+          if(typeof criteria[c] == 'number') {
+            console.log(`filter name: ${c}`)
+            parseFloat(obj[c]) === criteria[c]
+            ? passed[c] = true
+            : passed[c] = false
+          }
+          if(typeof criteria[c] == 'string') {
+            obj[c].toLowerCase() === criteria[c]
+            ? passed[c] = true
+            : passed[c] = false
+          }
+          if(typeof criteria[c] == 'boolean') {
+            obj[c] === criteria[c]
+            ? passed[c] = true
+            : passed[c] = false
+          }
+          if(criteria[c] instanceof Array) {
+
+            const result = criteria[c].reduce((result, value) => {
+              if(obj[c].includes(value)) {
+                result = value
+              }
+              return result
+            }, false)
+            result
+            ? passed[c] = true
+            : passed[c] = false
+          }
+          // if(typeof criteria[c] == 'object' && criteria[c] instanceof Array == false) {
+          // }
+        });
+        let itemPassed = true
+        Object.keys(passed).forEach(key => {
+          if(!passed[key]) itemPassed = passed[key]
+        });
+        return itemPassed
+      });
+    }
+    this.data = [...filterTest(products,filter)]  
+  }
+
 
   render() {
     return (
