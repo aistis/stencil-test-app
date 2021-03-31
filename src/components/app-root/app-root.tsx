@@ -10,6 +10,8 @@ export class AppRoot {
       <ion-app>
         <ion-router useHash={false}>
           <ion-route url="/" component="app-home" />
+          <ion-route url="/phones" component="category-landing" />
+          <ion-route url="/phones/:brand" component="product-list" />
         </ion-router>
         <ion-nav />
       </ion-app>
