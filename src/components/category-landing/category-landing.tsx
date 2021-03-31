@@ -23,7 +23,27 @@ export class CategoryLanding {
       console.error(error)
     }
   }
+
+  async componentWillRender () {
+    this.customizelist()
+  }
+
+  customizelist() {
+    this.data = [...state.categories.phones.brands]
+    if(this.sortState) {
+      this.sortData(this.data)
+    }
+  }
   
+  sortData(data): Array<object> {
+    if (this.sortState) {
+      data.sort((a ,b) => {
+        return a.displayName.toLowerCase() > b.displayName.toLowerCase() ? -1 : 1
+      })
+      return this.data = [...data]
+    }
+  }
+
   render() {
     return (
       <ion-content class="ion-padding">
