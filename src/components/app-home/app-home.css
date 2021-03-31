@@ -1,0 +1,10 @@
+ion-text {
+  margin: 0 30px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+ion-button {
+  float: right;
+  margin: 30px;
+}
