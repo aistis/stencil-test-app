@@ -22,6 +22,7 @@ export class ProductList {
       // TODO:needs to be handled in case of fetch or parse fail
       state.products = data
       this.data = data.filter(product => product.brand.toLowerCase() == this.brand)
+
       this.uriParams = getUriParams()
     } catch (error) {
       nav.push('error-page', {});
@@ -34,7 +35,7 @@ export class ProductList {
   }
 
   customizelist() {
-    this.data = [...state.products]
+    this.data = [...state.products.filter(product => product.brand.toLowerCase() == this.brand)]
     if(this.uriParams) {
       this.filterItems()
     }
@@ -54,7 +55,7 @@ export class ProductList {
 
   filterItems() {
     const filter = this.uriParams
-    const products = [...state.products]
+    const products = [...state.products.filter(product => product.brand.toLowerCase() == this.brand)]
     const filterTest = (arr, criteria) => {
       return arr.filter((obj) => {
         let passed:Object = {}
