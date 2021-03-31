@@ -2,6 +2,7 @@ import { Component, State, h } from '@stencil/core';
 import { endpoints } from "../../helpers/apiEndpointsConfig";
 import state from '../../helpers/store';
 
+const nav = document.querySelector('ion-nav');
 @Component({
   tag: 'category-landing',
   styleUrl: 'category-landing.css'
@@ -20,6 +21,7 @@ export class CategoryLanding {
       state.categories.phones.brands = data.options
       this.data = data.options
     } catch (error) {
+      nav.push('error-page', {});
       console.error(error)
     }
   }

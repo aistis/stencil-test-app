@@ -3,6 +3,7 @@ import { endpoints } from "../../helpers/apiEndpointsConfig";
 import state from '../../helpers/store';
 import { getUriParams } from '../../helpers/getUriParams';
 
+const nav = document.querySelector('ion-nav');
 @Component({
   tag: 'product-list',
   styleUrl: 'product-list.css',
@@ -23,26 +24,22 @@ export class ProductList {
       this.data = data.filter(product => product.brand.toLowerCase() == this.brand)
       this.uriParams = getUriParams()
     } catch (error) {
-      
+      nav.push('error-page', {});
       console.error(error)
     }
-    console.log(this.data)
   }
 
   async componentWillRender () {
-    console.log(this.uriParams)
     this.customizelist()
   }
 
   customizelist() {
     this.data = [...state.products]
     if(this.uriParams) {
-      console.log('lets filter the list')
       this.filterItems()
     }
     if(this.sortState) {
       this.sortData(this.data)
-      console.log('lets sort the list')
     }
   }
 
@@ -63,7 +60,6 @@ export class ProductList {
         let passed:Object = {}
         Object.keys(criteria).map((c) => {
           if(typeof criteria[c] == 'number') {
-            console.log(`filter name: ${c}`)
             parseFloat(obj[c]) === criteria[c]
             ? passed[c] = true
             : passed[c] = false
@@ -90,8 +86,6 @@ export class ProductList {
             ? passed[c] = true
             : passed[c] = false
           }
-          // if(typeof criteria[c] == 'object' && criteria[c] instanceof Array == false) {
-          // }
         });
         let itemPassed = true
         Object.keys(passed).forEach(key => {
@@ -102,7 +96,6 @@ export class ProductList {
     }
     this.data = [...filterTest(products,filter)]  
   }
-
 
   render() {
     return (
