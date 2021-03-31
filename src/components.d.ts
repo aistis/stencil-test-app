@@ -15,7 +15,13 @@ export namespace Components {
     interface PageHeadline {
         "text": String;
     }
+    interface ProductCard {
+        "item": {};
+        "optionList": boolean;
+        "productType": boolean;
+    }
     interface ProductList {
+        "brand": string;
     }
 }
 declare global {
@@ -43,6 +49,12 @@ declare global {
         prototype: HTMLPageHeadlineElement;
         new (): HTMLPageHeadlineElement;
     };
+    interface HTMLProductCardElement extends Components.ProductCard, HTMLStencilElement {
+    }
+    var HTMLProductCardElement: {
+        prototype: HTMLProductCardElement;
+        new (): HTMLProductCardElement;
+    };
     interface HTMLProductListElement extends Components.ProductList, HTMLStencilElement {
     }
     var HTMLProductListElement: {
@@ -54,6 +66,7 @@ declare global {
         "app-root": HTMLAppRootElement;
         "category-landing": HTMLCategoryLandingElement;
         "page-headline": HTMLPageHeadlineElement;
+        "product-card": HTMLProductCardElement;
         "product-list": HTMLProductListElement;
     }
 }
@@ -67,13 +80,20 @@ declare namespace LocalJSX {
     interface PageHeadline {
         "text"?: String;
     }
+    interface ProductCard {
+        "item"?: {};
+        "optionList"?: boolean;
+        "productType"?: boolean;
+    }
     interface ProductList {
+        "brand"?: string;
     }
     interface IntrinsicElements {
         "app-home": AppHome;
         "app-root": AppRoot;
         "category-landing": CategoryLanding;
         "page-headline": PageHeadline;
+        "product-card": ProductCard;
         "product-list": ProductList;
     }
 }
@@ -85,6 +105,7 @@ declare module "@stencil/core" {
             "app-root": LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
             "category-landing": LocalJSX.CategoryLanding & JSXBase.HTMLAttributes<HTMLCategoryLandingElement>;
             "page-headline": LocalJSX.PageHeadline & JSXBase.HTMLAttributes<HTMLPageHeadlineElement>;
+            "product-card": LocalJSX.ProductCard & JSXBase.HTMLAttributes<HTMLProductCardElement>;
             "product-list": LocalJSX.ProductList & JSXBase.HTMLAttributes<HTMLProductListElement>;
         }
     }
