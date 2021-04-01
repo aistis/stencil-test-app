@@ -10,20 +10,25 @@ ion-card-title {
   font-size: 16px;
   font-weight: 700;
 }
+
 .product-price-suffix {
   color: silver;
 }
+
 ion-chip {
   background-color: indigo;
   color: aliceblue;
   font-weight: 700;
 }
+
 .button-wrapper {
   justify-content: space-between;
 }
+
 ion-button {
-  padding: 20px;
+  margin: 16px;
 }
-.button-love button{
-  background-color: firebrick;
+
+ion-img::part(image) {
+  max-height: 400px;
 }

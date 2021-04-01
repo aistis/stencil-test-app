@@ -6,8 +6,7 @@ import { getUriParams } from '../../helpers/getUriParams';
 const nav = document.querySelector('ion-nav');
 @Component({
   tag: 'product-list',
-  styleUrl: 'product-list.css',
-  shadow: true,
+  styleUrl: 'product-list.css'
 })
 export class ProductList {
   @Prop() brand: string;
@@ -111,11 +110,13 @@ export class ProductList {
               </ion-item>
             </ion-col>
           </ion-row>
-          <ion-row>
+          <ion-row> 
             {this.data.length == 0
                 ? <h3>No data loaded yet</h3>
                 : this.data.map((item) =>
-                <product-card item={item} productType={true}></product-card>
+                <ion-col size="12" sizeSm="6" sizeMd="4" sizeLg="3">
+                  <product-card item={item} productType={true}></product-card>
+                </ion-col>
               )}
           </ion-row>
         </ion-grid>

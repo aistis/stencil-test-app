@@ -4,5 +4,5 @@ ion-grid {
   max-width:1440px;
 }
 ion-row {
-  justify-content: space-around;
+  justify-content: flex-start;
 }
