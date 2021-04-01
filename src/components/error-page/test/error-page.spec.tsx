@@ -7,12 +7,6 @@ describe('error-page', () => {
       components: [ErrorPage],
       html: `<error-page></error-page>`,
     });
-    expect(page.root).toEqualHtml(`
-      <error-page>
-        <mock:shadow-root>
-          <slot></slot>
-        </mock:shadow-root>
-      </error-page>
-    `);
+    expect(page.root.querySelector('ion-button').getAttribute('href')).toEqual(`/`);
   });
 });

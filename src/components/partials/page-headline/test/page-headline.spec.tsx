@@ -5,14 +5,8 @@ describe('page-headline', () => {
   it('renders', async () => {
     const page = await newSpecPage({
       components: [PageHeadline],
-      html: `<page-headline></page-headline>`,
+      html: `<page-headline text="Strong headline"></page-headline>`,
     });
-    expect(page.root).toEqualHtml(`
-      <page-headline>
-        <mock:shadow-root>
-          <slot></slot>
-        </mock:shadow-root>
-      </page-headline>
-    `);
+    expect(page.root.querySelector('h1').innerText).toEqual(`Strong headline`);
   });
 });

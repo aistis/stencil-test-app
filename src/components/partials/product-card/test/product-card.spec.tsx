@@ -1,18 +1,10 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { ProductCard } from '../product-card';
 
-describe('product-card', () => {
-  it('renders', async () => {
-    const page = await newSpecPage({
-      components: [ProductCard],
-      html: `<product-card></product-card>`,
-    });
-    expect(page.root).toEqualHtml(`
-      <product-card>
-        <mock:shadow-root>
-          <slot></slot>
-        </mock:shadow-root>
-      </product-card>
-    `);
-  });
-});
+it('Should set false as default for loved status on item', () => {
+  const product = new ProductCard();
+  product.productType = true
+  expect(product.loved).toBe(false)
+  product.handleLove('any')
+  expect(product.loved).toBe(true)
+})

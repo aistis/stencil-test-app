@@ -7,12 +7,6 @@ describe('category-landing', () => {
       components: [CategoryLanding],
       html: `<category-landing></category-landing>`,
     });
-    expect(page.root).toEqualHtml(`
-      <category-landing>
-        <mock:shadow-root>
-          <slot></slot>
-        </mock:shadow-root>
-      </category-landing>
-    `);
+    expect(page.root.querySelectorAll('product-card').length).toEqual(8);
   });
 });

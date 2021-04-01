@@ -7,6 +7,6 @@ describe('app-home', () => {
       components: [AppHome],
       html: '<app-home></app-home>',
     });
-    expect(root.querySelector('ion-title').textContent).toEqual('Home');
+    expect(root.querySelector('ion-button').innerText.toLowerCase()).toEqual('phones'.toLowerCase());
   });
 });
