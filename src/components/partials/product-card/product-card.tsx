@@ -1,4 +1,5 @@
-import { Component, Prop, h } from '@stencil/core';
+import { Component, Prop, Event, h, EventEmitter, State } from '@stencil/core';
+import state from '../../../helpers/store';
 
 const nav = document.querySelector('ion-nav');
 
@@ -8,13 +9,52 @@ const nav = document.querySelector('ion-nav');
   shadow: true
 })
 export class ProductCard {
-  @Prop() item = {}
+  @Prop() item:Object = {}
   @Prop() optionList = false
   @Prop() productType = false
+  @State() loved:Boolean = false 
+
+  async componentWillRender () {
+    const loved = this.productType 
+      ? state.loved.products.includes(this.item['contentKey'])
+      : state.loved.brands.includes(this.item['id'])
+    this.loved = loved
+  }
+
+  @Event({
+    eventName: 'itemRemoved',
+    composed: true,
+    cancelable: true,
+    bubbles: true,
+  }) itemRemoved: EventEmitter<ProductCard>;
+  @Event({
+    eventName: 'itemLoved',
+    composed: true,
+    cancelable: true,
+    bubbles: true,
+  }) itemLoved: EventEmitter<ProductCard>;
 
   handleClick(brand:String) {
     nav.push('product-list', {brand: brand.toLowerCase()});
   }
+
+  handleRemove(key) {
+    if (this.productType) {
+      this.itemRemoved.emit(key);
+    } else {
+      state.removed.brands.push(key.toLowerCase())
+    }
+  }
+
+  handleLove(key) {
+    if (this.productType) {
+      this.itemLoved.emit(key);
+      this.loved = true
+    } else {
+      state.removed.brands.push(key.toLowerCase())
+    }
+  }
+
   render() {
     return (
       <ion-card onClick={() => this.productType? null : this.handleClick(this.item['id'])}>
@@ -40,12 +80,24 @@ export class ProductCard {
           </ion-card-content> :
           null
         }
-        <ion-grid>
-          <ion-row class="button-wrapper">
-            <ion-button size="small">Remove</ion-button>
-            <ion-button size="small">Love</ion-button>
-          </ion-row>
-        </ion-grid>
+        {this.productType ?
+          <ion-grid>
+            <ion-row class="button-wrapper">
+              <ion-button 
+                size="small" 
+                onClick={() => this.handleRemove(this.productType ? this.item['contentKey'] : this.item['id'])}
+              >Remove</ion-button>
+              {this.loved 
+                ? <ion-icon size="large" name="heart-circle-sharp"></ion-icon>
+                : <ion-button 
+                    size="small" 
+                    onClick={() => this.handleLove(this.productType ? this.item['contentKey'] : this.item['id'])}
+                  >Love</ion-button>
+              }
+            </ion-row>
+          </ion-grid> :
+          null
+        }
       </ion-card>
     );
   }

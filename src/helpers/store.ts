@@ -7,6 +7,14 @@ const { state } = createStore({
     }
   },
   products: [],
+  loved: {
+    brands: [],
+    products: []
+  },
+  removed: {
+    brands: [],
+    products: []
+  }
 });
 
 export default state;

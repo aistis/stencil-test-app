@@ -1,7 +1,8 @@
-import { Component, Prop, State, h } from '@stencil/core';
+import { Component, Prop, State, h, Listen } from '@stencil/core';
 import { endpoints } from "../../helpers/apiEndpointsConfig";
 import state from '../../helpers/store';
 import { getUriParams } from '../../helpers/getUriParams';
+import { ProductCard } from '../partials/product-card/product-card';
 
 const nav = document.querySelector('ion-nav');
 @Component({
@@ -13,6 +14,7 @@ export class ProductList {
   @State() data= [];
   @State() sortState = false;
   @State() uriParams = {};
+  @State() lovedItemsCounter = 0
 
   async componentWillLoad() {
     try {
@@ -21,12 +23,34 @@ export class ProductList {
       // TODO:needs to be handled in case of fetch or parse fail
       state.products = data
       this.data = data.filter(product => product.brand.toLowerCase() == this.brand)
-
       this.uriParams = getUriParams()
+      this.lovedItemsCounter = state.loved.products.length
+
     } catch (error) {
       nav.push('error-page', {});
       console.error(error)
     }
+  }
+
+  @Listen('itemRemoved')
+  handleRemove(event: CustomEvent<ProductCard>) {
+    state.removed.products.indexOf(event.detail) < 0 
+      ? state.removed.products.push(event.detail)
+      : null
+    this.data = [...this.data.filter(item => item.contentKey !== event.detail)]
+  }
+
+  @Listen('itemLoved')
+  handleLove(event: CustomEvent<ProductCard>) {
+    this.lovedItemsCounter++
+    state.loved.products.indexOf(event.detail) < 0 
+      ? state.loved.products.push(event.detail)
+      : null
+    this.data = [...this.data.map(item => {
+      if(item.contentKey == event.detail) {
+        item['loved'] = true
+      }
+    })]
   }
 
   async componentWillRender () {
@@ -54,7 +78,8 @@ export class ProductList {
 
   filterItems() {
     const filter = this.uriParams
-    const products = [...state.products.filter(product => product.brand.toLowerCase() == this.brand)]
+    let products = [...state.products.filter(product => product.brand.toLowerCase() == this.brand)]
+    products = [...products.filter(product => state.removed.products.includes(product.contentKey) === false)]
     const filterTest = (arr, criteria) => {
       return arr.filter((obj) => {
         let passed:Object = {}
@@ -103,8 +128,11 @@ export class ProductList {
         <page-headline text={`Here is the ${this.brand} phones list`} />
         <ion-grid>
           <ion-row>
-            <ion-col sizeMd="8">
+            <ion-col sizeMd="12">
               <ion-item>
+                <ion-text class="ion-padding-end">Loved items in total: 
+                  <ion-text color="tertiary" class="ion-padding-start counter">{this.lovedItemsCounter}</ion-text>
+                </ion-text>
                 <ion-label>Sort items by title ascending</ion-label>
                 <ion-toggle checked={this.sortState} onIonChange={(ev) => (this.sortState = ev.detail.checked)} />
               </ion-item>

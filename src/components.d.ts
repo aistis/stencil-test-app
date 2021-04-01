@@ -18,7 +18,7 @@ export namespace Components {
         "text": String;
     }
     interface ProductCard {
-        "item": {};
+        "item": Object;
         "optionList": boolean;
         "productType": boolean;
     }
@@ -92,7 +92,9 @@ declare namespace LocalJSX {
         "text"?: String;
     }
     interface ProductCard {
-        "item"?: {};
+        "item"?: Object;
+        "onItemLoved"?: (event: CustomEvent<ProductCard>) => void;
+        "onItemRemoved"?: (event: CustomEvent<ProductCard>) => void;
         "optionList"?: boolean;
         "productType"?: boolean;
     }

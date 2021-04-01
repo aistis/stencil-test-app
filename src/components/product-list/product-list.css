@@ -6,3 +6,7 @@ ion-grid {
 ion-row {
   justify-content: flex-start;
 }
+.counter {
+  font-weight: 700;
+  font-size: 20px;
+}
